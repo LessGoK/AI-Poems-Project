@@ -10,17 +10,20 @@ function displayPoem(response) {
 function generatePoem(event) {
   event.preventDefault();
 
-  let instructionsElement = document.querySelector("#instructions");
-
-  let apiKey = "ba9bc3d0b8ta33o052590808f264424e";
-  let request = ` Write a poem about ${instructionsElement}`;
+  let instructionsInput = document.querySelector("#user-instructions");
+  let apiKey = "2046c535afeb092fo82f1d306d8a2b2t";
   let context =
-    "You are an expert poem writer. You write deeply emotional and beautiful poems. The poem should be 4 lines long. Format the answer in clean HTML using a <p> tag with line breaks <br> after every sentence. Sign the poem with (Shecodes AI) at the end of the pom in <strong>  tag.";
+    "You are a romantic Poem expert and love to write short poems. You mission is to generate a 4 line poem in basic HTML and separate each line with a <br />. Make sure to follow the user instructions. Do not include a title to the poem. Sign the poem with 'SheCodes AI' inside a <strong> element at the end of the poem and NOT at the beginning";
+  let prompt = `User instructions: Generate a poem about ${instructionsInput.value}`;
+  let apiURL = `https://api.shecodes.io/ai/v1/generate?prompt=${prompt}&context=${context}&key=${apiKey}`;
 
-  let apiUrl = `https://api.shecodes.io/ai/v1/generate?prompt=${request}&context=${context}&key=${apiKey}`;
+  console.log(apiURL);
+  let poemElement = document.querySelector("#poem");
+  poemElement.classList.remove("hidden");
+  poemElement.innerHTML = `<div class="generating">⏳ Generating a French poem about ${instructionsInput.value}</div>`;
 
-  axios.get(apiUrl).then(displayPoem);
+  axios.get(apiURL).then(displayPoem);
 }
 
-let poemFormElement = document.querySelector("#poem-form");
+let poemFormElement = document.querySelector("#poem-generator-form");
 poemFormElement.addEventListener("submit", generatePoem);
